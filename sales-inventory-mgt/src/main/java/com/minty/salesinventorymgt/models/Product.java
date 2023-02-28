@@ -1,5 +1,7 @@
 package com.minty.salesinventorymgt.models;
 
+import com.minty.salesinventorymgt.enums.OrderItemStatus;
+import com.minty.salesinventorymgt.enums.ProductStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,6 +25,8 @@ public class Product extends AppModel {
     @Column(nullable = false)
     private BigDecimal price;
 
+@Enumerated(EnumType.STRING)
+    private ProductStatus status;
 
     private BigDecimal generalDiscount;
 

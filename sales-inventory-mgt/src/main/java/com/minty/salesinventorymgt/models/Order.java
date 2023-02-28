@@ -1,5 +1,6 @@
 package com.minty.salesinventorymgt.models;
 
+import com.minty.salesinventorymgt.enums.OrderStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,7 +18,9 @@ public class Order extends AppModel {
     @Column(nullable = false, updatable = false, unique = true)
     private String orderNumber;
 
+    @Enumerated(EnumType.STRING)
 
+        private OrderStatus status;
     @ManyToOne
     @JoinColumn(name = "customer_id")
     private CustomerInfo customer;

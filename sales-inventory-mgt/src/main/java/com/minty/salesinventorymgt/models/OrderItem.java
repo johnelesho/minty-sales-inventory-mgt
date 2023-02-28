@@ -1,5 +1,7 @@
 package com.minty.salesinventorymgt.models;
 
+import com.minty.salesinventorymgt.enums.OrderItemStatus;
+import com.minty.salesinventorymgt.enums.OrderStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -27,6 +29,9 @@ public class OrderItem extends AppModel {
     private BigDecimal totalAmount;
 
     private BigDecimal unitPrice;
+
+    @Enumerated(EnumType.STRING)
+    private OrderItemStatus orderStatus;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "order_id")

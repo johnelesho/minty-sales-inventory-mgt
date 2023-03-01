@@ -1,8 +1,13 @@
 package com.minty.salesinventorymgt.dtos.request;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.PositiveOrZero;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PositiveOrZero;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -10,21 +15,25 @@ import java.math.BigDecimal;
 /**
  * A DTO for the {@link com.minty.salesinventorymgt.models.Product} entity
  */
-public record ProductRequest(
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+public class ProductRequest implements Serializable{
         @NotBlank
-        String name,
+        String name;
         @NotNull
                 @PositiveOrZero
-        BigDecimal price,
+        BigDecimal price;
         @NotNull
                 @PositiveOrZero
-        BigDecimal generalDiscount,
+        BigDecimal generalDiscount;
         @NotNull
         @PositiveOrZero
-                         Long allowableMinimumQuantityInStock,
+                         Long allowableMinimumQuantityInStock;
         @NotNull
         @PositiveOrZero
-        Long quantityInStock,
+        Long quantityInStock;
         @NotBlank
-                         String description) implements Serializable {
+                         String description;
 }

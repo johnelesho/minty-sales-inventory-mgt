@@ -1,9 +1,14 @@
-package com.minty.salesinventorymgt.repository;
+package com.minty.salesinventorymgt.repositories;
 
 import com.minty.salesinventorymgt.models.Order;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Long> {
+    boolean existsByOrderNumberIgnoreCase(String orderNumber);
+
+    Optional<Order> findByOrderNumber(String orderNumber);
 }

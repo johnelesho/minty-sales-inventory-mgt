@@ -2,18 +2,21 @@ package com.minty.salesinventorymgt.models;
 
 import com.minty.salesinventorymgt.enums.OrderItemStatus;
 import com.minty.salesinventorymgt.enums.ProductStatus;
-import jakarta.persistence.*;
+import javax.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicInsert;
 
 import java.math.BigDecimal;
 
 @Entity
-@Table(schema = "inv_tbl_product")
+@Table(name = "inv_tbl_product")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@DynamicInsert
+
 public class Product extends AppModel {
 
     @Column(nullable = false, unique = true)
@@ -30,11 +33,11 @@ public class Product extends AppModel {
 
     private BigDecimal generalDiscount;
 
-    @Column(nullable = false, columnDefinition = "Default 0")
+    @Column(nullable = false, columnDefinition = "integer default 0")
 
     private Long allowableMinimumQuantityInStock;
 
-    @Column(nullable = false, columnDefinition = "Default 0")
+    @Column(nullable = false, columnDefinition = "BigInt default 0")
     private Long quantityInStock;
 
     @Column(columnDefinition = "TEXT")

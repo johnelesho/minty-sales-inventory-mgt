@@ -1,6 +1,6 @@
 package com.minty.salesinventorymgt.dtos.request;
 
-import jakarta.validation.constraints.NotNull;
+import javax.validation.constraints.NotNull;
 
 import java.io.Serializable;
 

@@ -1,9 +1,9 @@
 package com.minty.salesinventorymgt.dtos.request;
 
 import com.minty.salesinventorymgt.enums.OrderItemStatus;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.PositiveOrZero;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
 
 import java.io.Serializable;
 import java.math.BigDecimal;

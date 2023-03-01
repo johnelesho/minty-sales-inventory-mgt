@@ -9,6 +9,6 @@ import java.time.LocalDateTime;
 /**
  * A DTO for the {@link com.minty.salesinventorymgt.models.OrderItem} entity
  */
-public record OrderItemResponse(LocalDateTime createdDate, LocalDateTime updatedDate, String orderItemNumber, OrderItemStatus orderStatus,
+public record OrderItemResponse(LocalDateTime createdDate, LocalDateTime updatedDate, String orderItemNumber, OrderItemStatus status,
                                 Long quantity, BigDecimal totalAmount, BigDecimal unitPrice) implements Serializable {
 }

@@ -1,7 +1,7 @@
 package com.minty.salesinventorymgt.dtos.request;
 
 import com.minty.salesinventorymgt.enums.OrderStatus;
-import jakarta.validation.constraints.NotNull;
+import javax.validation.constraints.NotNull;
 import lombok.Builder;
 import org.springframework.validation.annotation.Validated;
 

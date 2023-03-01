@@ -2,10 +2,11 @@ package com.minty.salesinventorymgt.models;
 
 import com.minty.salesinventorymgt.enums.OrderItemStatus;
 import com.minty.salesinventorymgt.enums.OrderStatus;
-import jakarta.persistence.*;
+import javax.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicInsert;
 
 import java.math.BigDecimal;
 
@@ -13,7 +14,8 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(schema = "inv_tbl_order_items")
+@Table(name = "inv_tbl_order_items")
+@DynamicInsert
 public class OrderItem extends AppModel {
 
     @Column(nullable = false, updatable = false, unique = true)
@@ -31,7 +33,7 @@ public class OrderItem extends AppModel {
     private BigDecimal unitPrice;
 
     @Enumerated(EnumType.STRING)
-    private OrderItemStatus orderStatus;
+    private OrderItemStatus status;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "order_id")

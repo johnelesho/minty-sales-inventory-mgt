@@ -1,9 +1,9 @@
 package com.minty.salesinventorymgt.models;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Embeddable;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(schema = "inv_tbl_customer")
+@Table(name = "inv_tbl_customer" )
 public class CustomerInfo extends AppModel{
     private String fullName;
     @Column(nullable = false,unique = true)

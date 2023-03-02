@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
@@ -10,6 +10,8 @@
     </parent>
     <modules>
         <module>sales-inventory-mgt</module>
+        <module>report-service</module>
+        <module>service-lib</module>
     </modules>
     <packaging>pom</packaging>
     <groupId>com.elsoft</groupId>
@@ -20,8 +22,8 @@
     <properties>
         <java.version>19</java.version>
         <testcontainers.version>1.17.6</testcontainers.version>
-        <modelmapper.version> 3.1.1</modelmapper.version>
-        <apache.commons.version> 3.12.0</apache.commons.version>
+        <modelmapper.version>3.1.1</modelmapper.version>
+        <apache.commons.version>3.12.0</apache.commons.version>
     </properties>
     <dependencies>
         <dependency>
@@ -34,6 +36,11 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <scope>runtime</scope>
+        </dependency>
 
     </dependencies>
     <dependencyManagement>
@@ -45,6 +52,7 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+
         </dependencies>
     </dependencyManagement>
 

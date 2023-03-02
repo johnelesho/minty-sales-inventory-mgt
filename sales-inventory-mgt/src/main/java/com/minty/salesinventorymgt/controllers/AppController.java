@@ -1,21 +1,18 @@
 package com.minty.salesinventorymgt.controllers;
 
-import com.minty.salesinventorymgt.dtos.request.ProductRequest;
-import com.minty.salesinventorymgt.dtos.response.ProductResponse;
+
+import com.minty.lib.dtos.response.ApiResponse;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
-public interface AppController<In, Out> {
-    ResponseEntity<Out> createNew( In request);
+public interface AppController<In> {
+    ResponseEntity<ApiResponse> createNew(In request);
 
 
-    ResponseEntity<List<Out>> getAll( int page,
-                                                 int size);
+    ResponseEntity<ApiResponse> getAll(int page,
+                                       int size);
 
 
-    ResponseEntity<Out> getOne( String code);
+    ResponseEntity<ApiResponse> getOne(String code);
 
-    ResponseEntity<Out> updateOne(String code,In request);
+    ResponseEntity<ApiResponse> updateOne(String code, In request);
 }

@@ -1,6 +1,7 @@
 package com.minty.salesinventorymgt.repositories;
 
-import com.minty.salesinventorymgt.models.OrderItem;
+
+import com.minty.lib.models.OrderItem;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

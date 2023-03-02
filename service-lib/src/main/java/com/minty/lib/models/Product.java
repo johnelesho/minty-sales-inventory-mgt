@@ -30,7 +30,7 @@ public class Product extends AppModel {
     private BigDecimal price;
 
     @Enumerated(EnumType.STRING)
-    @Column(columnDefinition = "default 'AVAILABLE'")
+    @Column(columnDefinition = "varchar(20) default 'AVAILABLE'")
     private ProductStatus status = ProductStatus.AVAILABLE;
 
     private BigDecimal generalDiscount;

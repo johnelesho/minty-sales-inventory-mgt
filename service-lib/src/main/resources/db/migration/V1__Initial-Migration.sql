@@ -17,7 +17,7 @@ CREATE TABLE inv_tbl_order
     created_date       TIMESTAMP WITHOUT TIME ZONE,
     updated_date       TIMESTAMP WITHOUT TIME ZONE,
     order_number       VARCHAR(255)                            NOT NULL,
-    status VARCHAR(20) DEFAULT 'PENDING',
+    status             VARCHAR(20) DEFAULT 'PENDING',
     customer_id        BIGINT,
     total_order_amount DECIMAL                                 NOT NULL,
     CONSTRAINT pk_inv_tbl_order PRIMARY KEY (id)
@@ -30,10 +30,10 @@ CREATE TABLE inv_tbl_order_items
     updated_date      TIMESTAMP WITHOUT TIME ZONE,
     order_item_number VARCHAR(255)                            NOT NULL,
     product_id        BIGINT,
-    quantity          BIGINT,
-    total_amount      DECIMAL,
-    unit_price        DECIMAL,
-    status VARCHAR(20) DEFAULT 'PENDING',
+    quantity          BIGINT                                  NOT NULL,
+    total_amount      DECIMAL                                 NOT NULL,
+    unit_price        DECIMAL                                 NOT NULL,
+    status            VARCHAR(20) DEFAULT 'PENDING',
     order_id          BIGINT,
     CONSTRAINT pk_inv_tbl_order_items PRIMARY KEY (id)
 );
@@ -46,10 +46,10 @@ CREATE TABLE inv_tbl_product
     name                                VARCHAR(255)                            NOT NULL,
     code                                VARCHAR(255)                            NOT NULL,
     price                               DECIMAL                                 NOT NULL,
-    status           VARCHAR(20)        DEFAULT 'AVAILABLE',
+    status                              VARCHAR(20) DEFAULT 'AVAILABLE',
     general_discount                    DECIMAL,
-    allowable_minimum_quantity_in_stock INTEGER DEFAULT 0                       NOT NULL,
-    quantity_in_stock                   BIGINT  DEFAULT 0                       NOT NULL,
+    allowable_minimum_quantity_in_stock INTEGER     DEFAULT 0                   NOT NULL,
+    quantity_in_stock                   BIGINT      DEFAULT 0                   NOT NULL,
     description                         TEXT,
     CONSTRAINT pk_inv_tbl_product PRIMARY KEY (id)
 );

@@ -20,7 +20,7 @@
     <name>minty</name>
     <description>minty</description>
     <properties>
-        <java.version>19</java.version>
+        <java.version>17</java.version>
         <testcontainers.version>1.17.6</testcontainers.version>
         <modelmapper.version>3.1.1</modelmapper.version>
         <apache.commons.version>3.12.0</apache.commons.version>

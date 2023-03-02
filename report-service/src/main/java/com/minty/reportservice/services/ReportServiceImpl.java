@@ -2,10 +2,12 @@ package com.minty.reportservice.services;
 
 
 import com.minty.lib.mappers.HelpMapper;
+import com.minty.lib.utils.KafkaConfigConstant;
 import com.minty.reportservice.dto.IOrderReport;
 import com.minty.reportservice.repositories.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -33,5 +35,10 @@ public class ReportServiceImpl {
         return orders;
     }
 
+    @KafkaListener(topics = KafkaConfigConstant.ORDER_TOPIC,
+            groupId = KafkaConfigConstant.GROUP_ID)
+    public void consume(String message) {
+        log.info(String.format("Message received -> %s", message));
+    }
 
 }

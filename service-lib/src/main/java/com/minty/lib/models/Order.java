@@ -26,7 +26,7 @@ public class Order extends AppModel {
 
     @Enumerated(EnumType.STRING)
     @Builder.Default
-    @Column(columnDefinition = "default 'PENDING'")
+    @Column(columnDefinition = "varchar(20) default 'PENDING'")
     private OrderStatus status = OrderStatus.PENDING;
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "customer_id")

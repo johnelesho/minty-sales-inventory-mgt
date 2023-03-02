@@ -54,14 +54,18 @@ public class CustomerInfoServiceImpl implements AppService<CustomerInfo, Custome
     public CustomerInfoResponse addNew(CustomerInfoRequest request) {
         log.info("Add New Customer method");
         CustomerInfo customerInfo;
-        try {
-            customerInfo = helpMapper.convertToCustomerEntity(request);
-            if (isExist(request.getEmailAddress())
-                    || isExist(request.getPhoneNumber())
-                    || isExist(request.getUsername())) {
-                throw new BadRequestException("Customer Already Exist");
-            }
+        if (request == null) {
+            throw new BadRequestException("Request cannot be null");
+        }
+        if (isExist(request.getEmailAddress())
+                || isExist(request.getPhoneNumber())
+                || isExist(request.getUsername())) {
+            throw new BadRequestException("Customer Already Exist");
+        }
 
+        try {
+
+            customerInfo = helpMapper.convertToCustomerEntity(request);
             customerInfo = customerInfoRepository.save(customerInfo);
             return helpMapper.convertToCustomerResonse(customerInfo);
         } catch (ParseException e) {
@@ -78,7 +82,13 @@ public class CustomerInfoServiceImpl implements AppService<CustomerInfo, Custome
     @Override
     @Synchronized
     public CustomerInfoResponse updateOne(String uniqueKey, CustomerInfoRequest request) {
+        if (request == null) {
+            throw new BadRequestException("Request cannot be null");
+        }
         CustomerInfo customerInfo = findOneEntity(uniqueKey);
+        if (customerInfo == null) {
+            throw new NotFoundException("Customer not found");
+        }
         BeanUtils.copyProperties(request, customerInfo);
         return helpMapper.convertToCustomerResonse(customerInfo);
     }

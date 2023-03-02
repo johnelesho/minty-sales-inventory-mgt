@@ -27,16 +27,18 @@ public class OrderItem extends AppModel {
     @JoinColumn(name = "product_id")
     private Product product;
 
-
+    @Column(nullable = false)
     private Long quantity;
 
+    @Column(nullable = false)
     private BigDecimal totalAmount;
 
+    @Column(nullable = false)
     private BigDecimal unitPrice;
 
     @Enumerated(EnumType.STRING)
     @Builder.Default
-    @Column(columnDefinition = "default 'PENDING'")
+    @Column(columnDefinition = "varchar(20) default 'PENDING'")
     private OrderItemStatus status = OrderItemStatus.PENDING;
 
     @ManyToOne(cascade = CascadeType.ALL)

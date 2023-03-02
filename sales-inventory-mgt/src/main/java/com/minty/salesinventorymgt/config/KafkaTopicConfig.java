@@ -1,6 +1,6 @@
 package com.minty.salesinventorymgt.config;
 
-import com.minty.lib.utils.TopicConstant;
+import com.minty.lib.utils.KafkaConfigConstant;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -16,7 +16,7 @@ class KafkaTopicConfig {
     @Bean
     public NewTopic orderCreationTopic() {
 
-        return TopicBuilder.name(TopicConstant.ORDER_TOPIC).build();
+        return TopicBuilder.name(KafkaConfigConstant.ORDER_TOPIC).build();
     }
 
 

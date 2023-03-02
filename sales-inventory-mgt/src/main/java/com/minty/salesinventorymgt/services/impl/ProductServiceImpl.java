@@ -60,7 +60,9 @@ public class ProductServiceImpl implements AppService<Product, ProductRequest, P
     @Synchronized
     public ProductResponse addNew(ProductRequest request) {
         Product product = null;
-
+        if (request == null) {
+            throw new BadRequestException("Request cannot be null");
+        }
         if (isExistByName(request.getName())) {
             throw new BadRequestException("Product already exists");
         }
@@ -100,7 +102,13 @@ public class ProductServiceImpl implements AppService<Product, ProductRequest, P
     @Override
     @Synchronized
     public ProductResponse updateOne(String uniqueKey, ProductRequest request) {
+        if (request == null) {
+            throw new BadRequestException("Request cannot be null");
+        }
         Product entity = findOneEntity(uniqueKey);
+        if (entity == null) {
+            throw new BadRequestException("Product not found");
+        }
         BeanUtils.copyProperties(request, entity);
         return helpMapper.convertToProductResonse(entity);
     }

@@ -7,7 +7,7 @@ import com.minty.lib.dtos.response.OrderResponse;
 import com.minty.lib.mappers.HelpMapper;
 import com.minty.lib.models.CustomerInfo;
 import com.minty.lib.models.Order;
-import com.minty.lib.utils.TopicConstant;
+import com.minty.lib.utils.KafkaConfigConstant;
 import com.minty.salesinventorymgt.config.KafkaTemplateConfig;
 import com.minty.salesinventorymgt.exceptions.BadRequestException;
 import com.minty.salesinventorymgt.exceptions.NotFoundException;
@@ -20,6 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -47,7 +48,7 @@ public class OrderServiceImpl implements AppService<Order, OrderRequest, OrderRe
         log.info("Place Order method");
         CustomerInfo customerInfo = null;
         Order order;
-        if (request.getCustomer() == null) {
+        if (request == null || request.getCustomer() == null) {
             throw new BadRequestException("Please enter Customer Info");
         } else {
             log.info("Checking if Customer Exist");
@@ -59,7 +60,7 @@ public class OrderServiceImpl implements AppService<Order, OrderRequest, OrderRe
                     ).orElse(null);
         }
         try {
-            kafka.sendMessage(helpMapper.convertToString(request), TopicConstant.ORDER_TOPIC);
+            kafka.sendMessage(helpMapper.convertToString(request), KafkaConfigConstant.ORDER_TOPIC);
         } catch (ParseException e) {
             throw new RuntimeException(e);
         } catch (JsonProcessingException e) {
@@ -117,13 +118,25 @@ public class OrderServiceImpl implements AppService<Order, OrderRequest, OrderRe
 
     @Override
     public List<OrderResponse> findAll(PageRequest pageRequest) {
-        return orderRepository.findAll(pageRequest).stream().map(helpMapper::convertToOrderResonse).toList();
+        Page<Order> orders;
+        if (pageRequest != null) {
+            orders = orderRepository.findAll(pageRequest);
+            if (orders != null)
+                return orders.stream().map(helpMapper::convertToOrderResonse).toList();
+        }
+        return null;
     }
 
     @Override
     @Synchronized
     public OrderResponse updateOne(String uniqueKey, OrderRequest request) {
+        if (request == null) {
+            throw new BadRequestException("Request cannot be null");
+        }
         Order order = findOneEntity(uniqueKey);
+        if (order == null) {
+            throw new NotFoundException("Order not found");
+        }
         BeanUtils.copyProperties(request, order);
         return helpMapper.convertToOrderResonse(order);
     }

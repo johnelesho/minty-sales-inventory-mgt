@@ -1,14 +1,5 @@
 package com.minty.salesinventorymgt.services.impl;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 import com.minty.lib.dtos.request.ProductRequest;
 import com.minty.lib.dtos.response.ProductResponse;
 import com.minty.lib.enums.ProductStatus;
@@ -17,13 +8,6 @@ import com.minty.lib.models.Product;
 import com.minty.salesinventorymgt.exceptions.BadRequestException;
 import com.minty.salesinventorymgt.exceptions.NotFoundException;
 import com.minty.salesinventorymgt.repositories.ProductRepository;
-
-import java.math.BigDecimal;
-import java.text.ParseException;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Optional;
-
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -34,6 +18,15 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import java.math.BigDecimal;
+import java.text.ParseException;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 @ContextConfiguration(classes = {ProductServiceImpl.class})
 @ExtendWith(SpringExtension.class)
@@ -234,14 +227,6 @@ class ProductServiceImplTest {
     @Test
     @Disabled("TODO: Complete this test")
     void testAddNew2() throws ParseException {
-        // TODO: Complete this test.
-        //   Reason: R013 No inputs found that don't throw a trivial exception.
-        //   Diffblue Cover tried to run the arrange/act section, but the method under
-        //   test threw
-        //   java.lang.NullPointerException: Cannot invoke "String.substring(int, int)" because the return value of "com.minty.lib.dtos.request.ProductRequest.getName()" is null
-        //       at com.minty.salesinventorymgt.services.impl.ProductServiceImpl.generateProductCode(ProductServiceImpl.java:82)
-        //       at com.minty.salesinventorymgt.services.impl.ProductServiceImpl.addNew(ProductServiceImpl.java:72)
-        //   See https://diff.blue/R013 to resolve this issue.
 
         when(productRepository.existsByNameIgnoreCase((String) any())).thenReturn(false);
 
@@ -267,13 +252,6 @@ class ProductServiceImplTest {
     @Test
     @Disabled("TODO: Complete this test")
     void testGenerateProductCode() {
-        // TODO: Complete this test.
-        //   Reason: R013 No inputs found that don't throw a trivial exception.
-        //   Diffblue Cover tried to run the arrange/act section, but the method under
-        //   test threw
-        //   java.lang.NullPointerException: Cannot invoke "String.substring(int, int)" because the return value of "com.minty.lib.dtos.request.ProductRequest.getName()" is null
-        //       at com.minty.salesinventorymgt.services.impl.ProductServiceImpl.generateProductCode(ProductServiceImpl.java:82)
-        //   See https://diff.blue/R013 to resolve this issue.
 
         productServiceImpl.generateProductCode(new ProductRequest());
     }
@@ -294,23 +272,6 @@ class ProductServiceImplTest {
     @Test
     @Disabled("TODO: Complete this test")
     void testFindAll2() {
-        // TODO: Complete this test.
-        //   Reason: R013 No inputs found that don't throw a trivial exception.
-        //   Diffblue Cover tried to run the arrange/act section, but the method under
-        //   test threw
-        //   com.minty.salesinventorymgt.exceptions.BadRequestException: An error occurred
-        //       at java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
-        //       at java.util.ArrayList$Itr.forEachRemaining(ArrayList.java:1003)
-        //       at java.util.Spliterators$IteratorSpliterator.forEachRemaining(Spliterators.java:1845)
-        //       at java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:509)
-        //       at java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:499)
-        //       at java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:575)
-        //       at java.util.stream.AbstractPipeline.evaluateToArrayNode(AbstractPipeline.java:260)
-        //       at java.util.stream.ReferencePipeline.toArray(ReferencePipeline.java:616)
-        //       at java.util.stream.ReferencePipeline.toArray(ReferencePipeline.java:622)
-        //       at java.util.stream.ReferencePipeline.toList(ReferencePipeline.java:627)
-        //       at com.minty.salesinventorymgt.services.impl.ProductServiceImpl.findAll(ProductServiceImpl.java:97)
-        //   See https://diff.blue/R013 to resolve this issue.
 
         Product product = new Product();
         product.setAllowableMinimumQuantityInStock(1L);
@@ -339,13 +300,6 @@ class ProductServiceImplTest {
     @Test
     @Disabled("TODO: Complete this test")
     void testFindAll3() {
-        // TODO: Complete this test.
-        //   Reason: R013 No inputs found that don't throw a trivial exception.
-        //   Diffblue Cover tried to run the arrange/act section, but the method under
-        //   test threw
-        //   java.lang.NullPointerException: Cannot invoke "org.springframework.data.domain.Page.stream()" because the return value of "com.minty.salesinventorymgt.repositories.ProductRepository.findAll(org.springframework.data.domain.Pageable)" is null
-        //       at com.minty.salesinventorymgt.services.impl.ProductServiceImpl.findAll(ProductServiceImpl.java:97)
-        //   See https://diff.blue/R013 to resolve this issue.
 
         when(productRepository.findAll((Pageable) any())).thenReturn(null);
         when(helpMapper.convertToProductResonse((Product) any())).thenThrow(new BadRequestException("An error occurred"));
@@ -420,14 +374,6 @@ class ProductServiceImplTest {
     @Test
     @Disabled("TODO: Complete this test")
     void testUpdateOne4() {
-        // TODO: Complete this test.
-        //   Reason: R013 No inputs found that don't throw a trivial exception.
-        //   Diffblue Cover tried to run the arrange/act section, but the method under
-        //   test threw
-        //   java.lang.IllegalArgumentException: Source must not be null
-        //       at com.minty.salesinventorymgt.services.impl.ProductServiceImpl.updateOne(ProductServiceImpl.java:104)
-        //   See https://diff.blue/R013 to resolve this issue.
-
         Product product = new Product();
         product.setAllowableMinimumQuantityInStock(1L);
         product.setCode("Code");

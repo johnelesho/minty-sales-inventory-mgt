@@ -1,18 +1,23 @@
 package com.minty.salesinventorymgt.services.impl;
 
 
-import com.fasterxml.jackson.core.JsonProcessingException;
+import com.minty.lib.dtos.request.OrderItemRequest;
 import com.minty.lib.dtos.request.OrderRequest;
 import com.minty.lib.dtos.response.OrderResponse;
+import com.minty.lib.enums.ProductStatus;
 import com.minty.lib.mappers.HelpMapper;
 import com.minty.lib.models.CustomerInfo;
 import com.minty.lib.models.Order;
+import com.minty.lib.models.OrderItem;
+import com.minty.lib.models.Product;
 import com.minty.lib.utils.KafkaConfigConstant;
 import com.minty.salesinventorymgt.config.KafkaTemplateConfig;
 import com.minty.salesinventorymgt.exceptions.BadRequestException;
 import com.minty.salesinventorymgt.exceptions.NotFoundException;
 import com.minty.salesinventorymgt.repositories.CustomerInfoRepository;
+import com.minty.salesinventorymgt.repositories.OrderItemRepository;
 import com.minty.salesinventorymgt.repositories.OrderRepository;
+import com.minty.salesinventorymgt.repositories.ProductRepository;
 import com.minty.salesinventorymgt.services.AppService;
 import lombok.RequiredArgsConstructor;
 import lombok.Synchronized;
@@ -25,8 +30,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.text.ParseException;
-import java.util.List;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -35,10 +39,13 @@ import java.util.List;
 public class OrderServiceImpl implements AppService<Order, OrderRequest, OrderResponse> {
 
     final OrderRepository orderRepository;
+    final OrderItemRepository orderItemRepository;
     final CustomerInfoRepository customerInfoRepository;
+
+    final ProductRepository productRepository;
     final HelpMapper helpMapper;
     final KafkaTemplateConfig kafka;
-    @Value("${orderNumber.length:7}")
+    @Value("${orderNumber.length:5}")
     private int orderNumberLength;
     @Value("${orderPrefix:ORDER}")
     private String orderNumberPrefix;
@@ -50,7 +57,8 @@ public class OrderServiceImpl implements AppService<Order, OrderRequest, OrderRe
         Order order;
         if (request == null || request.getCustomer() == null) {
             throw new BadRequestException("Please enter Customer Info");
-        } else {
+        }
+        else {
             log.info("Checking if Customer Exist");
             customerInfo = customerInfoRepository.
                     findByEmailAddressIgnoreCaseOrPhoneNumberOrUsernameIgnoreCase(
@@ -61,17 +69,8 @@ public class OrderServiceImpl implements AppService<Order, OrderRequest, OrderRe
         }
         try {
             kafka.sendMessage(helpMapper.convertToString(request), KafkaConfigConstant.ORDER_TOPIC);
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
-        } catch (JsonProcessingException e) {
-            throw new BadRequestException("Error with kafka " + e.getMessage());
-        }
-
-        try {
-            order = helpMapper.convertToOrderEntity(request);
             StringBuilder orderNumber = new StringBuilder(orderNumberLength);
             boolean exist = true;
-            String orderNumberSuffice = "";
             while (exist) {
                 orderNumber.setLength(0);
                 orderNumber.append(orderNumberPrefix);
@@ -79,16 +78,43 @@ public class OrderServiceImpl implements AppService<Order, OrderRequest, OrderRe
                 exist = isExist(orderNumber.toString());
             }
 
+//            Order Number for each order
+            List<OrderItemRequest> orderItems = request.getOrderItems().stream().toList();
+            Set<OrderItem> items = new LinkedHashSet<>();
+            for (OrderItemRequest orderItem : orderItems
+            ) {
+                String productCode = orderItem.getProduct();
+                if(productCode== null || productCode.isEmpty()){
+                    throw new BadRequestException("Product Can not be null");
+                }
+                Product product = productRepository.findByCodeIgnoreCase(productCode).orElseThrow(() ->
+                        new NotFoundException(String.format("Product - %s Not Found", productCode)));
+                if(product.getStatus() == ProductStatus.NOT_AVAILABLE){
+                    throw new BadRequestException(String.format("Product - %s is not currently available", product.getCode()));
+                }
+                OrderItem item = helpMapper.convertToOrderItemEntity(orderItem);
+                item.setProduct(product);
+                item.setOrderItemNumber(generateOrderItem(orderNumber.toString(), orderItems.indexOf(orderItem)));
+
+                items.add(item);
+            }
+            order = helpMapper.convertToOrderEntity(request);
             order.setOrderNumber(orderNumber.toString());
-        } catch (ParseException e) {
+            order.setOrderItems(items);
+
+
+            if (customerInfo != null) {
+                order.setCustomer(customerInfo);
+            }
+            log.info("{} - {}", order.getOrderNumber() );
+            order = orderRepository.save(order);
+            return helpMapper.convertToOrderResonse(order);
+
+        }catch (Exception e) {
+            log.error("Error In Placing Order", e);
             throw new BadRequestException(e.getMessage());
         }
-        if (customerInfo != null) {
-            order.setCustomer(customerInfo);
-        }
-        order = orderRepository.save(order);
 
-        return helpMapper.convertToOrderResonse(order);
 
     }
 
@@ -121,10 +147,11 @@ public class OrderServiceImpl implements AppService<Order, OrderRequest, OrderRe
         Page<Order> orders;
         if (pageRequest != null) {
             orders = orderRepository.findAll(pageRequest);
-            if (orders != null)
+            log.info(orders.toString());
+            if(orders != null)
                 return orders.stream().map(helpMapper::convertToOrderResonse).toList();
         }
-        return null;
+        return new ArrayList<>();
     }
 
     @Override
@@ -140,4 +167,10 @@ public class OrderServiceImpl implements AppService<Order, OrderRequest, OrderRe
         BeanUtils.copyProperties(request, order);
         return helpMapper.convertToOrderResonse(order);
     }
-}
+
+
+    private String generateOrderItem(String num, int index) {
+        return num + "__" + index;
+
+    }
+    }

@@ -4,6 +4,7 @@ package com.minty.lib.mappers;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.minty.lib.dtos.request.CustomerInfoRequest;
+import com.minty.lib.dtos.request.OrderItemRequest;
 import com.minty.lib.dtos.request.OrderRequest;
 import com.minty.lib.dtos.request.ProductRequest;
 import com.minty.lib.dtos.response.CustomerInfoResponse;
@@ -13,6 +14,7 @@ import com.minty.lib.enums.OrderStatus;
 import com.minty.lib.enums.ProductStatus;
 import com.minty.lib.models.CustomerInfo;
 import com.minty.lib.models.Order;
+import com.minty.lib.models.OrderItem;
 import com.minty.lib.models.Product;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,7 +37,6 @@ public class HelpMapper {
 
 
     public Order convertToOrderEntity(OrderRequest request) throws ParseException {
-        log.info("Request {}", request.toString());
         Order order = modelMapper.map(request, Order.class);
         order.setStatus(OrderStatus.PENDING);
 
@@ -60,7 +61,6 @@ public class HelpMapper {
     public Product convertToProductEntity(ProductRequest request) throws ParseException {
 
         Product entity = modelMapper.map(request, Product.class);
-        entity.setStatus(ProductStatus.AVAILABLE);
         return entity;
     }
 
@@ -68,5 +68,10 @@ public class HelpMapper {
         ObjectMapper objectMapper = new ObjectMapper();
         String plainJson = objectMapper.writeValueAsString(request);
         return plainJson;
+    }
+
+    public OrderItem convertToOrderItemEntity(OrderItemRequest request) {
+        OrderItem entity = modelMapper.map(request, OrderItem.class);
+        return entity;
     }
 }

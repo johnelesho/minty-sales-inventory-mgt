@@ -64,7 +64,7 @@ public class ProductServiceImpl implements AppService<Product, ProductRequest, P
             throw new BadRequestException("Request cannot be null");
         }
         if (isExistByName(request.getName())) {
-            throw new BadRequestException("Product already exists");
+            throw new BadRequestException(String.format("Product %s already exists",product.getName()));
         }
         try {
             product = helpMapper.convertToProductEntity(request);
@@ -86,7 +86,7 @@ public class ProductServiceImpl implements AppService<Product, ProductRequest, P
         String codeSuffice = "";
         while (exist) {
             code.setLength(0);
-            codeSuffice = RandomStringUtils.randomAlphanumeric(4);
+            codeSuffice = RandomStringUtils.randomNumeric(4);
             code.append(codePrefix);
             code.append(codeSuffice);
             exist = isExist(code.toString());

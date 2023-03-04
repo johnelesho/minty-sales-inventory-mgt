@@ -10,7 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +23,7 @@ public class ReportServiceImpl {
 
     final HelpMapper mapper;
 
-    public List<IOrderReport> getOrderReport(LocalDate startDate, LocalDate endDate) {
+    public List<IOrderReport> getOrderReport(LocalDateTime startDate, LocalDateTime endDate) {
         List<IOrderReport> orders = new ArrayList<>();
         orders = orderRepository.generateOrderReportGivenDateRange(startDate, endDate);
         return orders;

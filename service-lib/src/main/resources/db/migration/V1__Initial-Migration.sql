@@ -34,8 +34,14 @@ CREATE TABLE inv_tbl_order_items
     total_amount      DECIMAL                                 NOT NULL,
     unit_price        DECIMAL                                 NOT NULL,
     status            VARCHAR(20) DEFAULT 'PENDING',
-    order_id          BIGINT,
     CONSTRAINT pk_inv_tbl_order_items PRIMARY KEY (id)
+);
+
+CREATE TABLE inv_tbl_order_order_items
+(
+    order_id       BIGINT NOT NULL,
+    order_items_id BIGINT NOT NULL,
+    CONSTRAINT pk_inv_tbl_order_orderitems PRIMARY KEY (order_id, order_items_id)
 );
 
 CREATE TABLE inv_tbl_product
@@ -66,6 +72,9 @@ ALTER TABLE inv_tbl_customer
 ALTER TABLE inv_tbl_order_items
     ADD CONSTRAINT uc_inv_tbl_order_items_orderitemnumber UNIQUE (order_item_number);
 
+ALTER TABLE inv_tbl_order_order_items
+    ADD CONSTRAINT uc_inv_tbl_order_order_items_orderitems UNIQUE (order_items_id);
+
 ALTER TABLE inv_tbl_order
     ADD CONSTRAINT uc_inv_tbl_order_ordernumber UNIQUE (order_number);
 
@@ -76,10 +85,13 @@ ALTER TABLE inv_tbl_product
     ADD CONSTRAINT uc_inv_tbl_product_name UNIQUE (name);
 
 ALTER TABLE inv_tbl_order_items
-    ADD CONSTRAINT FK_INV_TBL_ORDER_ITEMS_ON_ORDER FOREIGN KEY (order_id) REFERENCES inv_tbl_order (id);
-
-ALTER TABLE inv_tbl_order_items
     ADD CONSTRAINT FK_INV_TBL_ORDER_ITEMS_ON_PRODUCT FOREIGN KEY (product_id) REFERENCES inv_tbl_product (id);
 
 ALTER TABLE inv_tbl_order
     ADD CONSTRAINT FK_INV_TBL_ORDER_ON_CUSTOMER FOREIGN KEY (customer_id) REFERENCES inv_tbl_customer (id);
+
+ALTER TABLE inv_tbl_order_order_items
+    ADD CONSTRAINT fk_invtblordordite_on_order FOREIGN KEY (order_id) REFERENCES inv_tbl_order (id);
+
+ALTER TABLE inv_tbl_order_order_items
+    ADD CONSTRAINT fk_invtblordordite_on_order_item FOREIGN KEY (order_items_id) REFERENCES inv_tbl_order_items (id);

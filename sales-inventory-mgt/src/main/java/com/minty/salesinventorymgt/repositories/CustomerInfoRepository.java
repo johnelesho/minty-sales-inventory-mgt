@@ -1,12 +1,15 @@
 package com.minty.salesinventorymgt.repositories;
 
 
+import com.minty.lib.dtos.request.CustomerInfoRequest;
 import com.minty.lib.models.CustomerInfo;
+import org.springframework.beans.PropertyValues;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -41,4 +44,6 @@ public interface CustomerInfoRepository extends JpaRepository<CustomerInfo, Long
     Optional<CustomerInfo> findByEmailAddressIgnoreCaseOrPhoneNumberOrUsernameIgnoreCase(@Param("value") String uniqueKey);
 
     Optional<CustomerInfo> findByEmailAddressIgnoreCaseOrPhoneNumberOrUsernameIgnoreCase(String email, String phone, String username);
+
+
 }

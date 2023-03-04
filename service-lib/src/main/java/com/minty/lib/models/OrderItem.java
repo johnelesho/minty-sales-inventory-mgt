@@ -41,8 +41,6 @@ public class OrderItem extends AppModel {
     @Column(columnDefinition = "varchar(20) default 'PENDING'")
     private OrderItemStatus status = OrderItemStatus.PENDING;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "order_id")
-    private Order order;
+
 
 }

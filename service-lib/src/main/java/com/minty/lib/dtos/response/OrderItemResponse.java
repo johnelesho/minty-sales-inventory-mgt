@@ -23,6 +23,8 @@ public class OrderItemResponse implements Serializable {
     private String orderItemNumber;
     private OrderItemStatus status;
 
+    private ProductResponse product;
+
     private Long quantity;
     private BigDecimal totalAmount;
     private BigDecimal unitPrice;

@@ -28,15 +28,15 @@ public class Order extends AppModel {
     @Builder.Default
     @Column(columnDefinition = "varchar(20) default 'PENDING'")
     private OrderStatus status = OrderStatus.PENDING;
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "customer_id")
     private CustomerInfo customer;
 
-    @OneToMany(mappedBy = "order", orphanRemoval = true)
-    private Set<OrderItem> orderItems = new LinkedHashSet<>();
 
     @Column(nullable = false)
     private BigDecimal totalOrderAmount;
 
+    @OneToMany( cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<OrderItem> orderItems = new LinkedHashSet<>();
 
 }

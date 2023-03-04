@@ -79,6 +79,7 @@ public class CustomerInfoServiceImpl implements AppService<CustomerInfo, Custome
 
     }
 
+
     @Override
     @Synchronized
     public CustomerInfoResponse updateOne(String uniqueKey, CustomerInfoRequest request) {

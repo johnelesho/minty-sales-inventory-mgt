@@ -23,13 +23,13 @@ public class ReportController {
     final ReportServiceImpl reportService;
 
     @GetMapping
-    public ResponseEntity<ApiResponse> getAll(@RequestParam(value = "startDate", required = false) LocalDate startDate,
-                                              @RequestParam(value = "endDate", required = false) LocalDate endDate) {
+    public ResponseEntity<ApiResponse> getAll(@RequestParam(name = "startDate", required = false) LocalDate startDate,
+                                              @RequestParam(name = "endDate", required = false) LocalDate endDate) {
         List<IOrderReport> report;
         if (startDate == null || endDate == null) {
             report = reportService.getOrderReport();
         } else {
-            report = reportService.getOrderReport(startDate, endDate);
+            report = reportService.getOrderReport(startDate.atStartOfDay(), endDate.atStartOfDay());
         }
         ApiResponse apiResponse = ApiResponse.builder()
                 .status(HttpStatus.OK)

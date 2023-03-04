@@ -2,8 +2,10 @@ package com.minty.salesinventorymgt.controllers;
 
 
 import com.minty.lib.dtos.request.CustomerInfoRequest;
+import com.minty.lib.dtos.request.ProductRequest;
 import com.minty.lib.dtos.response.ApiResponse;
 import com.minty.lib.dtos.response.CustomerInfoResponse;
+import com.minty.lib.dtos.response.OrderResponse;
 import com.minty.lib.models.CustomerInfo;
 import com.minty.salesinventorymgt.services.AppService;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -32,7 +35,21 @@ public class CustomerInfoController implements AppController<CustomerInfoRequest
         return new ResponseEntity<ApiResponse>(apiResponse, HttpStatus.CREATED);
     }
 
+    @Override
+    @PostMapping("/bulk")
+    public ResponseEntity<ApiResponse> createNew(@RequestBody List<CustomerInfoRequest> requests) {
+        List<CustomerInfoResponse> responses = new ArrayList<>();
+        for (CustomerInfoRequest req: requests
+        ) {
+            responses.add(customerInfoService.addNew(req));
+        }
 
+        ApiResponse apiResponse = ApiResponse.builder()
+                .status(HttpStatus.CREATED)
+                .data(responses)
+                .build();
+        return new ResponseEntity<ApiResponse>(apiResponse, HttpStatus.CREATED);
+    }
     @Override
     @GetMapping
     public ResponseEntity<ApiResponse> getAll(@RequestParam(name = "page", defaultValue = "0") int page,

@@ -20,7 +20,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Validated
+
 public class ProductRequest implements Serializable {
     @NotBlank(message = "name must be at least 4 characters")
     @Size(min = 4, message = "name must be at least 4 characters")

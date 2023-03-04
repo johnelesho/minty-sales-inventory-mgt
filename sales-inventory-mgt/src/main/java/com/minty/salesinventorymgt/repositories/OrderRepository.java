@@ -1,7 +1,10 @@
 package com.minty.salesinventorymgt.repositories;
 
 
+import com.minty.lib.enums.OrderStatus;
+import com.minty.lib.enums.ProductStatus;
 import com.minty.lib.models.Order;
+import org.flywaydb.core.api.configuration.FluentConfiguration;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -20,4 +23,5 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     List<Order> findAllByOrderByCreatedDateDesc();
 
 
+    List<Order> findAllByStatusOrderByCreatedDateDesc(OrderStatus status);
 }
